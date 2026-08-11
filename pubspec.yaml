@@ -1,0 +1,17 @@
+name: red_mesh_app
+description: App de chat mesh sin internet
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  nearby_connections: ^4.2.0
+  geolocator: ^12.0.0
+  permission_handler: ^11.3.1
+
+flutter:
+  uses-material-design: true
