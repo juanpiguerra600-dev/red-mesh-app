@@ -7,10 +7,16 @@ workflows:
       flutter: stable
       java: 17
     scripts:
-      - name: Borrar carpeta nativa antigua y recrear Android v2
+      - name: Reconstruir proyecto Flutter desde cero
         script: |
+          # 1. Crear un proyecto limpio de Flutter en una carpeta temporal
+          flutter create temp_app --platforms=android --org com.redmesh.app
+          
+          # 2. Copiar la estructura nativa Android v2 moderna al repositorio
           rm -rf android
-          flutter create . --platforms=android --org com.redmesh.app
+          cp -r temp_app/android ./android
+          rm -rf temp_app
+
       - name: Inyectar permisos de Bluetooth y GPS
         script: |
           cat << 'EOF' > android/app/src/main/AndroidManifest.xml
@@ -44,8 +50,10 @@ workflows:
               </application>
           </manifest>
           EOF
+
       - name: Descargar dependencias
         script: flutter pub get
+
       - name: Compilar APK
         script: flutter build apk --release
     artifacts:
