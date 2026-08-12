@@ -5,7 +5,7 @@ workflows:
     max_build_duration: 30
     environment:
       flutter: stable
-      android_sdk: 34
+      java: 17
     scripts:
       - name: Borrar carpeta nativa antigua y recrear Android v2
         script: |
