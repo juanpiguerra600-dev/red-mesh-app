@@ -22,7 +22,7 @@ class _MeshChatAppState extends State<MeshChatApp> {
   MeshService? _meshService;
   bool _isServiceStarted = false;
   
-  List<String> _messages = [];
+  final List<String> _messages = [];
   int _connectedPeersCount = 0;
 
   Future<void> _requestPermissions() async {
@@ -77,7 +77,7 @@ class _MeshChatAppState extends State<MeshChatApp> {
 
   void _sendLocation() async {
     Position position = await Geolocator.getCurrentPosition(
-      desiredAccuracy: LocationAccuracy.high,
+      locationSettings: const LocationSettings(accuracy: LocationAccuracy.high),
     );
     String coords = "GPS: ${position.latitude}, ${position.longitude}";
     _meshService!.sendMessage(coords);
@@ -94,7 +94,7 @@ class _MeshChatAppState extends State<MeshChatApp> {
         appBar: AppBar(title: const Text("Mesh Chat - Configuración")),
         body: Padding(
           padding: const EdgeInsets.all(20.0),
-          style: Column(
+          child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               TextField(
@@ -117,7 +117,7 @@ class _MeshChatAppState extends State<MeshChatApp> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Red Mesh (${_connectedPeersCount} vecinos directos)"),
+        title: Text("Red Mesh ($_connectedPeersCount vecinos)"),
       ),
       body: Column(
         children: [
