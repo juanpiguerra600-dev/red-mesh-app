@@ -7,17 +7,14 @@ workflows:
       flutter: stable
       java: 17
     scripts:
-      - name: Reconstruir proyecto Flutter desde cero
+      - name: Reconstruir proyecto Flutter nativo
         script: |
-          # 1. Crear un proyecto limpio de Flutter en una carpeta temporal
           flutter create temp_app --platforms=android --org com.redmesh.app
-          
-          # 2. Copiar la estructura nativa Android v2 moderna al repositorio
           rm -rf android
           cp -r temp_app/android ./android
           rm -rf temp_app
 
-      - name: Inyectar permisos de Bluetooth y GPS
+      - name: Inyectar Manifest con Flutter Embedding V2 y Permisos
         script: |
           cat << 'EOF' > android/app/src/main/AndroidManifest.xml
           <manifest xmlns:android="http://schemas.android.com/apk/res/android">
@@ -31,6 +28,7 @@ workflows:
               <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
               <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
               <uses-permission android:name="android.permission.NEARBY_WIFI_DEVICES" android:usesPermissionFlags="neverForLocation" />
+
               <application
                   android:label="Red Mesh Chat"
                   android:icon="@mipmap/ic_launcher">
@@ -42,6 +40,12 @@ workflows:
                       android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
                       android:hardwareAccelerated="true"
                       android:windowSoftInputMode="adjustResize">
+
+                      <!-- Marca obligatoria para Android V2 Embedding -->
+                      <meta-data
+                          android:name="flutterEmbedding"
+                          android:value="2" />
+
                       <intent-filter>
                           <action android:name="android.intent.action.MAIN"/>
                           <category android:name="android.intent.category.LAUNCHER"/>
@@ -56,5 +60,6 @@ workflows:
 
       - name: Compilar APK
         script: flutter build apk --release
+
     artifacts:
       - build/app/outputs/flutter-apk/*.apk
