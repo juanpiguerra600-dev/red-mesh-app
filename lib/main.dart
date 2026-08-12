@@ -77,7 +77,7 @@ class _MeshChatAppState extends State<MeshChatApp> {
 
   void _sendLocation() async {
     Position position = await Geolocator.getCurrentPosition(
-      locationSettings: const LocationSettings(accuracy: LocationAccuracy.high),
+      desiredAccuracy: LocationAccuracy.high,
     );
     String coords = "GPS: ${position.latitude}, ${position.longitude}";
     _meshService!.sendMessage(coords);
