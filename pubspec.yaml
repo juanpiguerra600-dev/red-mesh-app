@@ -1,5 +1,5 @@
 name: red_mesh_app
-description: App de chat mesh sin internet
+description: App de chat mesh offline por Bluetooth y WiFi
 publish_to: 'none'
 version: 1.0.0+1
 
